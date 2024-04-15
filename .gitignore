@@ -1,0 +1,16 @@
+*~
+*.pyc
+*.swp
+*.swo
+gae_runtime/*
+third_party/*
+core/templates/prod/*
+.coverage*
+.viminfo
+libpeerconnection.log
+uploads/*
+venv/
+*.db
+.DS_Store
+.idea
+static/images/splash/*

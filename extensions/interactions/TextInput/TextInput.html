@@ -1,0 +1,23 @@
+<script type="text/ng-template" id="interaction/TextInput">
+  <!-- This outer div is needed, otherwise the textarea will overlap the footer of the page. -->
+  <div class="text-input-container">
+    <form ng-submit="submitAnswer(answer)" role="form" class="form-horizontal">
+      <schema-based-editor schema="schema" local-value="answer" label-for-focus-target="labelForFocusTarget">
+      </schema-based-editor>
+
+      <div ng-if="rows > 1">
+        <button ng-click="submitAnswer(answer)" class="btn btn-default" style="margin-top: 15px;">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</script>
+
+<script type="text/ng-template" id="response/TextInput">
+  <[answer]>
+</script>
+
+<script type="text/ng-template" id="shortResponse/TextInput">
+  <span><[answer | truncateAtFirstLine]></span>
+</script>

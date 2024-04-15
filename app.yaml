@@ -1,0 +1,106 @@
+application: oppiaserver
+version: 2-1-3
+runtime: python27
+api_version: 1
+threadsafe: false
+instance_class: F4
+
+builtins:
+- appstats: on
+- deferred: on
+- remote_api: on
+
+inbound_services:
+- warmup
+
+handlers:
+- url: /favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+  secure: always
+  http_headers:
+    Cache-Control: 'public, max-age=2592000'
+    Vary: Accept-Encoding
+- url: /images
+  static_dir: static/images
+  secure: always
+  http_headers:
+    Cache-Control: 'public, max-age=600'
+- url: /static/pages
+  static_dir: static/pages
+  secure: always
+  http_headers:
+    Cache-Control: 'public, max-age=600'
+- url: /robots.txt
+  static_files: static/pages/robots.txt
+  upload: static/pages/robots.txt
+  secure: always
+  http_headers:
+    Cache-Control: 'public, max-age=2592000'
+    Vary: Accept-Encoding
+- url: /scripts
+  static_dir: static/scripts
+  secure: always
+  http_headers:
+    Cache-Control: 'no-cache'
+- url: /css
+  # NB: not minified. TODO(sll): fix.
+  static_dir: core/templates/dev/head/css
+  secure: always
+- url: /third_party/static
+  static_dir: third_party/static
+  secure: always
+  http_headers:
+    Cache-Control: 'public, max-age=2592000'
+    Vary: Accept-Encoding
+- url: /third_party/generated
+  static_dir: third_party/generated
+  secure: always
+  http_headers:
+  # TODO(Sean Lip): Add cache when system to break cache during
+  # new release is figured out.
+    Cache-Control: 'no-cache'
+- url: /extensions/gadgets/(.*)/static/(.*)
+  static_files: extensions/gadgets/\1/static/\2
+  upload: extensions/gadgets/(.*)/static/(.*)
+  secure: always
+  http_headers:
+    Cache-Control: 'no-cache'
+- url: /extensions/interactions/(.*)/static/(.*)
+  static_files: extensions/interactions/\1/static/\2
+  upload: extensions/interactions/(.*)/static/(.*)
+  secure: always
+  http_headers:
+    Cache-Control: 'no-cache'
+- url: /extensions/rich_text_components/(.*)/static/(.*)
+  static_files: extensions/rich_text_components/\1/static/\2
+  upload: extensions/rich_text_components/(.*)/static/(.*)
+  secure: always
+  http_headers:
+    Cache-Control: 'no-cache'
+- url: /mapreduce/pipeline/images
+  static_dir: third_party/gae-mapreduce-1.9.17.0/mapreduce/lib/pipeline/ui/images
+  secure: always
+- url: /mapreduce(/.*)?
+  script: mapreduce.main.APP
+  login: admin
+  secure: always
+- url: /mapreduce/worker(/.*)?
+  script: mapreduce.main.APP
+  login: admin
+  secure: always
+- url: /cron/.*
+  login: admin
+  script: main_cron.app
+  secure: always
+- url: /.*
+  script: main.app
+  secure: always
+
+libraries:
+- name: jinja2
+  version: '2.6'
+- name: numpy
+  version: '1.6.1'
+- name: webapp2
+  version: '2.5.2'
